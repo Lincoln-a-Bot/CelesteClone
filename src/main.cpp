@@ -1,6 +1,6 @@
 
 //Plataform globals
-static HWND window;
+
 
 
 static bool running = true;
