@@ -1,4 +1,4 @@
-
+#include "celesteclone_lib.h"
 //Plataform globals
 
 
@@ -22,14 +22,36 @@ void platform_update();
 static HWND window;
 
 //win plataform iplementation
+LRESULT CALLBACK windows_window_callback(HWND window, UINT message, WPARAM wparam, LPARAM lparam)
+{
+  LRESULT result = 0;
+
+  switch(message)
+  {
+    case WM_CLOSE:
+    {
+      running = false;
+      break;
+    }
+    
+    default:
+    {
+      result = DefWindowProcA(window, message, wparam, lparam);
+    }
+  }
+
+  return result;
+}
+
 bool platform_create_window(int width, int height, const char* title)
 {
   HINSTANCE instance = GetModuleHandleA(0);
+
   WNDCLASSA wc = {};
   wc.hIcon = LoadIcon(instance, IDI_APPLICATION);
   wc.hCursor = LoadCursor(NULL, IDC_ARROW);
   wc.lpszClassName = title;
-  wc.lpfnWndProc = DefWindowProcA;
+  wc.lpfnWndProc = windows_window_callback;
 
   if(!RegisterClassA(&wc))
   {
@@ -69,6 +91,10 @@ int main()
   while (running)
   {
     platform_update();
+
+    SM_TRACE("Hello World");
+    SM_WARN("Hello World");
+    SM_ERROR("Hello World");
   }
   
 }
